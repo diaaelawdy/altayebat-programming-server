@@ -1,5 +1,5 @@
 {
-  "buildCommand": "npm run build && mkdir -p public",
+  "buildCommand": "npm run build && mkdir -p public && echo 'User-agent: *' > public/robots.txt",
   "outputDirectory": "public",
   "functions": { "api/index.js": { "includeFiles": "dist/**" } },
   "rewrites": [{ "source": "/(.*)", "destination": "/api" }]
