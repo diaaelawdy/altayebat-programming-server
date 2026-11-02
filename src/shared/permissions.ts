@@ -43,6 +43,14 @@ export const MEMBER_PERMISSIONS: Permission[] = [
 
 export const FOUNDER_ROLE = 'Founder';
 export const MEMBER_ROLE = 'Member';
+export const REVIEWER_ROLE = 'Reviewer';
+
+/** A Member who can also review new companies and questions. */
+export const REVIEWER_PERMISSIONS: Permission[] = [
+  ...MEMBER_PERMISSIONS,
+  'questions.review',
+  'companies.review',
+];
 
 export function isPermission(key: string): key is Permission {
   return key in PERMISSIONS;

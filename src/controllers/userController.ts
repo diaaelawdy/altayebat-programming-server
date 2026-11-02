@@ -9,6 +9,7 @@ import {
   CompanyRepository,
   QuestionRepository,
   ReportRepository,
+  RoleRequestRepository,
   UserRepository,
 } from '../repositories/index.js';
 import { body, query } from '../middleware/index.js';
@@ -122,6 +123,9 @@ export const userController = {
         : null,
       pendingCompanies: perms.has('companies.review')
         ? await CompanyRepository.countPending()
+        : null,
+      roleRequests: perms.has('users.assign_roles')
+        ? await RoleRequestRepository.countPending()
         : null,
     });
   },

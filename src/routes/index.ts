@@ -19,6 +19,7 @@ import { screenText } from '../middleware/profanity.js';
 import { bodyField, logged } from '../middleware/audit.js';
 import { RoleRepository } from '../repositories/index.js';
 import { avatarBody, userController as users } from '../controllers/userController.js';
+import { roleRequestController as roleRequests } from '../controllers/roleRequestController.js';
 
 /**
  * Pipeline per route: (global: rateLimit → authenticate → csrf) → requirePermission → validate → controller.
@@ -56,6 +57,15 @@ export function apiRouter() {
   r.delete('/me/lists/:id', requireAuth, users.deleteList);
   r.put('/me/lists/:id/questions/:questionId', requireAuth, users.listItem(true));
   r.delete('/me/lists/:id/questions/:questionId', requireAuth, users.listItem(false));
+
+  r.get('/me/role-requests', requireAuth, noStore, roleRequests.mine);
+  r.get('/roles/requestable', requireAuth, roleRequests.requestable);
+  r.post(
+    '/role-requests',
+    requireAuth,
+    validate({ body: s.roleRequestSchema }),
+    roleRequests.create,
+  );
 
   r.get('/meta', users.meta);
   r.get('/users/:username', users.publicProfile);
@@ -282,6 +292,27 @@ export function apiRouter() {
     users.listUsers,
   );
   r.get('/admin/users/:id', requirePermission('users.view_private'), noStore, users.userDetail);
+
+  r.get(
+    '/admin/role-requests',
+    requirePermission('users.assign_roles'),
+    noStore,
+    validate({ query: s.pageQuery }),
+    roleRequests.pending,
+  );
+  r.post(
+    '/admin/role-requests/:id/approve',
+    requirePermission('users.assign_roles'),
+    logged('approve', 'roleRequest'),
+    roleRequests.approve,
+  );
+  r.post(
+    '/admin/role-requests/:id/reject',
+    requirePermission('users.assign_roles'),
+    validate({ body: s.rejectRoleRequestSchema }),
+    logged('reject', 'roleRequest', bodyField('note')),
+    roleRequests.reject,
+  );
 
   r.get(
     '/admin/user-lookup',

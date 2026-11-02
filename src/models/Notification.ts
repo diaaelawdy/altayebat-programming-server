@@ -12,6 +12,8 @@ export const NOTIFICATION_TYPES = [
   'message.new',
   'message.reply',
   'badge.awarded',
+  'role.approved',
+  'role.rejected',
 ] as const;
 
 const notificationSchema = new Schema(

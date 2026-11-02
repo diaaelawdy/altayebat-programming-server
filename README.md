@@ -49,6 +49,12 @@ npm run dev               # http://localhost:4100
 
 There is no email and no third-party login. Users register with an anonymous **avatar** (an icon on a color; changeable later), a **username** (3–20 characters: letters, numbers, `_` or `-`; it must not start with a number; stored lowercase) and a **password** (at least 6 characters, hashed with argon2id). Registering signs you in immediately. Because there is no email, there is no password reset: users should keep their password safe.
 
+### Roles and role requests
+
+Every user has exactly one role. System roles: **Founder** (every permission), **Member** (default for sign-ups) and **Reviewer** (Member plus `questions.review` and `companies.review`: can approve or reject new questions and companies). Admins can edit Reviewer's permissions or create more roles.
+
+Any member can ask for a role other than Founder or Member at `POST /api/role-requests` (`{ roleId, reason }`, reason at least 10 characters). One pending request per user. Holders of `users.assign_roles` see them at `GET /api/admin/role-requests` and approve (the role applies immediately) or reject with an optional note. The member is notified either way and sees their history at `GET /api/me/role-requests`.
+
 ### Moderation and safety
 
 - **Four-eyes review**: nobody approves or rejects their own question or company while another active reviewer exists. Every new company goes through review.
@@ -173,3 +179,9 @@ All routes are under `/api`. See `src/routes/index.ts` for the full table with g
 - **Study**: `PUT|DELETE /questions/:id/bookmark`, `PUT|DELETE /questions/:id/studied`, `/me/bookmarks|progress|activity|lists|notifications`
 - **Companies**: `POST /companies` (suggest; published directly with `companies.create`), `GET /me/companies`, `/admin/company-review` (+ `/:id/approve|reject`)
 - **Admin**: `/admin/review`, `/admin/reports`, `/admin/roles`, `/admin/users`, `/admin/user-lookup`, `/admin/companies`
+
+## Contributing
+
+Source: [mokabla-client](https://github.com/diaaelawdy/mokabla-client) · [mokabla-server](https://github.com/diaaelawdy/mokabla-server). Issues and pull requests are welcome.
+
+Please contribute from a separate GitHub account that doesn't reveal who you are. People share their real interviews here, and nobody should be traceable back to one.

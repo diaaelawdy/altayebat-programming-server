@@ -4,6 +4,8 @@ import {
   FOUNDER_ROLE,
   MEMBER_PERMISSIONS,
   MEMBER_ROLE,
+  REVIEWER_PERMISSIONS,
+  REVIEWER_ROLE,
 } from '../shared/permissions.js';
 import { slugify } from '../lib/text.js';
 import { CompanyService } from '../services/CompanyService.js';
@@ -35,6 +37,19 @@ export async function seedRoles() {
       },
       // Keep any extra permissions an admin granted Members; ensure the baseline.
       $addToSet: { permissions: { $each: MEMBER_PERMISSIONS } },
+    },
+    { upsert: true },
+  );
+  // Created once; after that admins may edit its permissions like any other role.
+  await Role.updateOne(
+    { name: REVIEWER_ROLE },
+    {
+      $set: { isSystem: true },
+      $setOnInsert: {
+        name: REVIEWER_ROLE,
+        description: 'A member who can also review new companies and questions.',
+        permissions: REVIEWER_PERMISSIONS,
+      },
     },
     { upsert: true },
   );

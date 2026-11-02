@@ -224,6 +224,9 @@ export const roleSchema = z.object({
   // Omitted on create: the new role starts with Member's permissions.
   permissions: z.array(z.string()).optional(),
 });
+/** A member asking for a role says why. */
+export const roleRequestSchema = z.object({ roleId: objectId, reason: text(1000).min(10) });
+export const rejectRoleRequestSchema = z.object({ note: text(500).optional().default('') });
 /** Every user has exactly one role. */
 export const assignRoleSchema = z.object({ roleId: objectId });
 // A restriction always says why; a link to the offending post/message is optional.

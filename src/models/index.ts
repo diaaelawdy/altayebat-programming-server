@@ -13,3 +13,4 @@ export * from './Notification.js';
 export * from './IpBan.js';
 export * from './Message.js';
 export * from './AuditLog.js';
+export * from './RoleRequest.js';

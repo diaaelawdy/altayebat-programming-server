@@ -4,11 +4,12 @@ import {
   CompanyRepository,
   QuestionRepository,
   RoleRepository,
+  RoleRequestRepository,
   UserRepository,
 } from '../repositories/index.js';
 import { audit } from '../services/audit.js';
 
-type Target = 'question' | 'company' | 'user' | 'role';
+type Target = 'question' | 'company' | 'user' | 'role' | 'roleRequest';
 
 /** A readable name and link for the target, captured before the action runs. */
 async function describe(type: Target, id: string): Promise<{ label: string; link: string }> {
@@ -25,6 +26,16 @@ async function describe(type: Target, id: string): Promise<{ label: string; link
   if (type === 'user') {
     const u = await UserRepository.findById(id);
     return { label: u?.username ? `@${u.username}` : '', link: u ? `/u/${u.username}` : '' };
+  }
+  if (type === 'roleRequest') {
+    const rq = await RoleRequestRepository.findById(id);
+    const [u, role] = rq
+      ? await Promise.all([UserRepository.findById(rq.userId), RoleRepository.findById(rq.roleId)])
+      : [null, null];
+    return {
+      label: u ? `@${u.username} → ${role?.name ?? ''}` : '',
+      link: '/admin/role-requests',
+    };
   }
   const r = await RoleRepository.findById(id);
   return { label: r?.name ?? '', link: '/admin/roles' };

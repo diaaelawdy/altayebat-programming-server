@@ -11,3 +11,4 @@ export * from './NotificationRepository.js';
 export * from './IpBanRepository.js';
 export * from './MessageRepository.js';
 export * from './AuditRepository.js';
+export * from './RoleRequestRepository.js';
