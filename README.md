@@ -182,6 +182,6 @@ All routes are under `/api`. See `src/routes/index.ts` for the full table with g
 
 ## Contributing
 
-Source: [mokabla-client](https://github.com/diaaelawdy/mokabla-client) · [mokabla-server](https://github.com/diaaelawdy/mokabla-server). Issues and pull requests are welcome.
+Source: [altayebat-programming-client](https://github.com/diaaelawdy/altayebat-programming-client) · [altayebat-programming-server](https://github.com/diaaelawdy/altayebat-programming-server). Issues and pull requests are welcome.
 
 Please contribute from a separate GitHub account that doesn't reveal who you are. People share their real interviews here, and nobody should be traceable back to one.
