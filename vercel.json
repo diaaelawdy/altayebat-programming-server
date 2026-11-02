@@ -1,0 +1,6 @@
+{
+  "buildCommand": "npm run build && mkdir -p public",
+  "outputDirectory": "public",
+  "functions": { "api/index.js": { "includeFiles": "dist/**" } },
+  "rewrites": [{ "source": "/(.*)", "destination": "/api" }]
+}
